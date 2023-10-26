@@ -10,7 +10,14 @@
     "prepare": "husky install",
     "commitlint": "commitlint --config commitlint.config.cjs -e -V",
     "lint": "eslint src",
-    "fix": "eslint src --fix"
+    "fix": "eslint src --fix",
+    "lint:eslint": "eslint src/**/*.{ts,vue} --cache --fix",
+    "format-code": "bash .husky/format-code.sh"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,vue,json}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "vue": "^3.3.4"
@@ -29,6 +36,7 @@
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-vue": "^9.18.0",
     "husky": "^8.0.0",
+    "lint-staged": "^15.0.2",
     "prettier": "^3.0.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
