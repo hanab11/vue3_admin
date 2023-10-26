@@ -49,6 +49,9 @@ devDependencies:
   husky:
     specifier: ^8.0.0
     version: registry.npmmirror.com/husky@8.0.3
+  prettier:
+    specifier: ^3.0.3
+    version: registry.npmmirror.com/prettier@3.0.3
   typescript:
     specifier: ^5.0.2
     version: registry.npmmirror.com/typescript@5.2.2
