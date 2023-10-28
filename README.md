@@ -11,10 +11,11 @@ commitlint.config.cjs =git提交校验
 .eslintrc.cjs .eslintignore =eslint配置、规则、对谁忽略
 .stylelintrc.cjs .stylelintignore =stylelint配置、规则、对谁忽略
 .prettierrc.json .prettierignore =prettier配置、规则、对谁忽略
+.env.development .env.production .env.test =env环境变量，默认使用development
 
 .husky/pre-commit 提交之前的配置（一般是提交格式化）
 .husky/commit-msg 提交消息的配置（一般是提交校验）
-src/vite-env.d.ts env环境变量的配置（实现不同环境差异化行为）
+src/vite-env.d.ts env环境变量的配置（不同环境不同数据）
 
 《git提交校验》现在当我们填写`commit`信息的时候，前面就需要带着下面的`subject`和`: `
 'feat',//新特性、新功能
