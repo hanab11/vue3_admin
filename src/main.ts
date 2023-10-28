@@ -28,3 +28,15 @@ app.use(globalComponents)
 app.mount('#app')
 
 console.log(import.meta.env)
+
+// 测试mock数据
+import axios from 'axios'
+// axios完整写法，使用登录接口
+axios({
+  url: '/api/user/login',
+  method: 'post',
+  data: {
+    username: 'admin',
+    password: '111111'
+  }
+})
