@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import App from './App.vue'
+import App from '@/App.vue'
 
 // 引入element-plus插件、样式、国际化
 import ElementPlus from 'element-plus'
