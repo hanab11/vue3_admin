@@ -10,6 +10,8 @@ import './style.css' // 本地默认样式 后期删除
 
 // 引入全局组件插件
 import globalComponents from './components'
+// 引入模板的全局样式
+import '@/styles/index.scss'
 
 // 引入svg图标
 import 'virtual:svg-icons-register'
