@@ -4,9 +4,16 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <div>
-    <el-button>我是element按钮</el-button>
-  </div>
-  <div>
+    <h1>SVG封装使用</h1>
+    <svg-icon name="food" color="black" width="50px" height="50px"></svg-icon>
+    <h1>SVG直接使用</h1>
+    <!-- svg标签是图标容器，内部使用use标签 -->
+    <svg style="width: 100px; height: 100px">
+      <!-- xlink:href即使用哪个图标，属性值#icon-名字，备注图标可以动态绑定 -->
+      <!-- fill属性可以设定颜色，尽量在复制svg代码时候直接调色 -->
+      <use xlink:href="#icon-food" fill="skyblue"></use>
+    </svg>
+    <hr />
     <a href="https://vitejs.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>

@@ -8,10 +8,20 @@ import 'element-plus/dist/index.css'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import './style.css' // 本地默认样式 后期删除
 
+// 引入全局组件插件
+import globalComponents from './components'
+
+// 引入svg图标
+import 'virtual:svg-icons-register'
+
 // 创建应用实例对象
 const app = createApp(App)
-// 安装插件
+
+// 安装element-plus插件
 app.use(ElementPlus, { locale: zhCn })
+// 安装自定义插件
+app.use(globalComponents)
+
 // 挂载
 app.mount('#app')
 
