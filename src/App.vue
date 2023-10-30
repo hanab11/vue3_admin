@@ -1,11 +1,31 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
+import request from '@/utils/request'
+import { onMounted } from 'vue'
+
+// 挂载时发送封装好的axios请求
+onMounted(() => {
+  request({
+    url: '/user/login',
+    method: 'post',
+    data: {
+      username: 'admin',
+      password: '111111'
+    }
+  }).then((response) => {
+    console.log(response)
+  })
+})
 </script>
 
 <template>
   <div>
+    <h1>axios二次封装使用</h1>
+    <span>详见控制台-网络-headers的token</span>
+
     <h1>SVG封装使用</h1>
     <svg-icon name="food" color="black" width="50px" height="50px"></svg-icon>
+
     <h1>SVG直接使用</h1>
     <!-- svg标签是图标容器，内部使用use标签 -->
     <svg style="width: 100px; height: 100px">
