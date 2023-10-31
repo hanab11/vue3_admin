@@ -27,4 +27,4 @@ app.use(globalComponents)
 // 挂载
 app.mount('#app')
 
-console.log(import.meta.env)
+console.log('环境变量', import.meta.env)

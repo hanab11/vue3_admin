@@ -1,26 +1,19 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
-import request from '@/utils/request'
 import { onMounted } from 'vue'
+import { reqLogin } from '@/api/user'
 
-// 挂载时发送封装好的axios请求
+// 挂载时，发送统一管理、封装好的axios请求（API）
 onMounted(() => {
-  request({
-    url: '/user/login',
-    method: 'post',
-    data: {
-      username: 'admin',
-      password: '111111'
-    }
-  }).then((response) => {
-    console.log(response)
+  reqLogin({ username: 'admin', password: '111111' }).then((response) => {
+    console.log('登录响应', response)
   })
 })
 </script>
 
 <template>
   <div>
-    <h1>axios二次封装使用</h1>
+    <h1>API统一管理使用</h1>
     <span>详见控制台-网络-headers的token</span>
 
     <h1>SVG封装使用</h1>

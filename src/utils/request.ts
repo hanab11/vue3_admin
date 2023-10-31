@@ -9,14 +9,14 @@ let axiosRequest = axios.create({
 })
 // 请求拦截器，处理业务：开始进度条、请求头携带公共参数...
 axiosRequest.interceptors.request.use((config) => {
-  console.log(config)
+  console.log('请求拦截', config)
   config.headers.token = '123'
   return config // 需要返回配置对象
 })
 // 响应拦截器，处理业务：进度条结束、简化服务器返回的数据、处理http网络错误...
 axiosRequest.interceptors.response.use(
   (response) => {
-    console.log(response)
+    console.log('响应拦截', response)
     // 成功回调，简化数据
     return response.data // 返回数据
   },
