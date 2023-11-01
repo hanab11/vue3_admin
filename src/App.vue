@@ -12,6 +12,10 @@ onMounted(() => {
 </script>
 
 <template>
+  <div style="background-color: skyblue">
+    <h1>路由组件</h1>
+    <router-view></router-view>
+  </div>
   <div>
     <h1>API统一管理使用</h1>
     <span>详见控制台-网络-headers的token</span>

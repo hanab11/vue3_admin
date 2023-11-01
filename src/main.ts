@@ -16,6 +16,9 @@ import '@/styles/index.scss'
 // 引入svg图标
 import 'virtual:svg-icons-register'
 
+// 引入路由器
+import router from '@/router'
+
 // 创建应用实例对象
 const app = createApp(App)
 
@@ -23,6 +26,8 @@ const app = createApp(App)
 app.use(ElementPlus, { locale: zhCn })
 // 安装自定义插件
 app.use(globalComponents)
+// 安装路由器
+app.use(router)
 
 // 挂载
 app.mount('#app')
