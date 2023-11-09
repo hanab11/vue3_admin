@@ -8,7 +8,7 @@ import 'element-plus/dist/index.css'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 // 引入全局组件插件
-import globalComponents from './components'
+import globalComponents from '@/components'
 // 引入模板的全局样式
 import '@/styles/index.scss'
 
@@ -17,6 +17,11 @@ import 'virtual:svg-icons-register'
 
 // 引入路由器
 import router from '@/router'
+
+// 引入大仓库pinia
+import pinia from '@/store'
+
+//
 
 // 创建应用实例对象
 const app = createApp(App)
@@ -27,6 +32,8 @@ app.use(ElementPlus, { locale: zhCn })
 app.use(globalComponents)
 // 安装路由器
 app.use(router)
+// 安装大仓库pinia
+app.use(pinia)
 
 // 挂载
 app.mount('#app')
