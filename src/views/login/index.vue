@@ -25,7 +25,13 @@
           </el-form-item>
           <!-- 登录按钮 -->
           <el-form-item>
-            <el-button class="login_btn" type="primary" size="default">
+            <el-button
+              class="login_btn"
+              :loading="isLoading"
+              type="primary"
+              size="default"
+              @click="login"
+            >
               登录
             </el-button>
           </el-form-item>
@@ -37,9 +43,68 @@
 
 <script setup lang="ts">
 import { User, Lock } from '@element-plus/icons-vue'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElNotification } from 'element-plus'
+// 引入用户相关仓库
+import useUserStore from '@/store/modules/user'
 
+// 创建实例
+let $router = useRouter()
+let userStore = useUserStore()
+
+// 控制按钮样式-loading
+let isLoading = ref(false)
+// 收集表单账密
 let loginForm = reactive({ username: 'admin', password: '111111' })
+
+// 登录按钮回调
+const login = async () => {
+  // 分析，点击按钮以后做的事（发请求，跳转，消息提示，交互样式）
+  // 开始加载
+  isLoading.value = true
+
+  /* try catch写法 */
+  try {
+    // 保证登陆成功
+    await userStore.userLogin(loginForm)
+
+    $router.push('/home') // 编程式路由跳转到主页
+    // 成功提示
+    ElNotification({
+      type: 'success',
+      message: '登陆成功' // 暂时写死
+    })
+  } catch (error) {
+    // 停止加载
+    isLoading.value = false
+    // 失败提示
+    ElNotification({
+      type: 'error',
+      message: (error as Error).message // 类型断言：as手动指定类型，Error是ts默认的类型
+    })
+  }
+
+  /* promise.then写法 */
+  /* userStore.userLogin(loginForm).then(
+    // 成功回调
+    (response) => {
+      $router.push('/home')
+      ElNotification({
+        type: 'success',
+        message: response
+      })
+    },
+    // 失败回调
+    (error) => {
+      isLoading.value = false
+      ElNotification({
+        type: 'error',
+        message: (error as Error).message
+      })
+    }
+  ) */
+}
 </script>
 
 <style scoped lang="scss">
