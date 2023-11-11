@@ -46,6 +46,7 @@ import { User, Lock } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElNotification } from 'element-plus'
+import { timeMsg } from '@/utils/time'
 // 引入用户相关仓库
 import useUserStore from '@/store/modules/user'
 
@@ -73,6 +74,7 @@ const login = async () => {
     // 成功提示
     ElNotification({
       type: 'success',
+      title: `${timeMsg()}`,
       message: '登陆成功' // 暂时写死
     })
   } catch (error) {
