@@ -4,18 +4,24 @@
       <!-- 一行两列，EL里栅格共占24个单位，xs是宽度小于768时  -->
       <el-col :span="12" :xs="0"></el-col>
       <el-col :span="12" :xs="24">
-        <el-form class="login_form">
+        <!-- 登录的表单 :model会将表单项存到指定对象上 :rules校验规则 ref获取组件对象 -->
+        <el-form
+          class="login_form"
+          :model="loginForm"
+          :rules="rules"
+          ref="loginForms"
+        >
           <h1>Hello</h1>
           <h2>欢迎</h2>
-          <!-- 用户名，每个表单项用el-form-item -->
-          <el-form-item>
+          <!-- 用户名，el-form-item即每个表单项，其中prop是指派具体的规则 -->
+          <el-form-item prop="username">
             <el-input
               :prefix-icon="User"
               v-model="loginForm.username"
             ></el-input>
           </el-form-item>
           <!-- 密码 -->
-          <el-form-item>
+          <el-form-item prop="password">
             <el-input
               type="password"
               :prefix-icon="Lock"
@@ -50,18 +56,25 @@ import { timeMsg } from '@/utils/time'
 // 引入用户相关仓库
 import useUserStore from '@/store/modules/user'
 
-// 创建实例
+// 创建路由器、用户仓库实例
 let $router = useRouter()
 let userStore = useUserStore()
 
-// 控制按钮样式-loading
-let isLoading = ref(false)
 // 收集表单账密
 let loginForm = reactive({ username: 'admin', password: '111111' })
+// 控制按钮样式-loading
+let isLoading = ref(false)
+// 获取el-form组件，注：起名不要用elForm，容易冲突！
+let loginForms = ref() // ref获取DOM元素必须在onMounted生命周期，@click回调里也可
 
 // 登录按钮回调
 const login = async () => {
-  // 分析，点击按钮以后做的事（发请求，跳转，消息提示，交互样式）
+  // 分析，点击按钮以后做的事（校验，发请求，跳转，消息提示，交互样式）
+
+  // 保证全部表单校验通过，才发请求（await只接收promise成功的结果，失败就中断）
+  let result = await loginForms.value.validate() // el-form组件validate方法，校验，接收回调或者返回promise
+  console.log('await只接收', result)
+
   // 开始加载
   isLoading.value = true
 
@@ -106,6 +119,42 @@ const login = async () => {
       })
     }
   ) */
+}
+
+/* 自定义校验规则（方法），以下属性是传入参数
+rule 校验对象，_占位
+value 表单元素的文本内容
+callback 放行函数，符合条件直接callback，不符合callback需要传参 Error错误提示信息
+ */
+const validatorUsername = (_: any, value: any, callback: any) => {
+  value.length >= 5 ? callback() : callback(new Error('账号长度至少5位'))
+}
+const validatorPassword = (_: any, value: any, callback: any) => {
+  value.length >= 6 ? callback() : callback(new Error('密码长度至少6位'))
+}
+
+/* 表单校验规则，以下属性是默认规则
+required 代表这个字段必须
+min 文本长度至少多少位、max 文本长度最多多少位
+message 错误的提示信息
+trigger 触发校验表单的时机：change 文本发生变化触发校验、blur 失去焦点的时候触发校验
+validator 校验器，需配合自定义规则
+ */
+const rules = {
+  username: [
+    /* {required: true, min: 5, message: '账号长度至少5位', trigger: 'change'} */
+    {
+      trigger: 'change',
+      validator: validatorUsername
+    }
+  ],
+  password: [
+    /* {required: true, min: 6, message: '密码长度至少6位', trigger: 'change'} */
+    {
+      trigger: 'change',
+      validator: validatorPassword
+    }
+  ]
 }
 </script>
 
