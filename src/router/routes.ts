@@ -7,10 +7,10 @@ export const constantRoute = [
     name: 'login' // 需要命名路由，做权限
   },
   {
-    // 登录成功后，展示数据的路由
+    // 登录成功后，展示数据的路由（实际上放布局组件）
     path: '/',
-    component: () => import('@/views/home/index.vue'),
-    name: 'home'
+    component: () => import('@/layout/index.vue'),
+    name: 'layout'
   },
   {
     // 404
