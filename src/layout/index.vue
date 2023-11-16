@@ -2,6 +2,8 @@
   <div class="layout_container">
     <!-- 左侧菜单 -->
     <div class="layout_menu">
+      <!-- logo组件 -->
+      <logo></logo>
       <!-- 展示菜单 -->
       <!-- 滚动组件 -->
     </div>
@@ -12,7 +14,9 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import logo from './logo/index.vue'
+</script>
 
 <style scoped lang="scss">
 .layout_container {
