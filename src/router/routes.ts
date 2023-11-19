@@ -4,24 +4,78 @@ export const constantRoute = [
     // 登录
     path: '/login',
     component: () => import('@/views/login/index.vue'), // 路由组件懒加载
-    name: 'login' // 需要命名路由，做权限
+    name: 'login', // 需要命名路由，做权限
+    meta: {
+      title: '登录',
+      isShow: false
+    }
   },
   {
     // 登录成功后，展示数据的路由（实际上放布局组件）
     path: '/',
     component: () => import('@/layout/index.vue'),
-    name: 'layout'
+    name: 'layout',
+    meta: {
+      title: '布局',
+      isShow: true
+    },
+    children: [
+      {
+        // 首页
+        path: '/home',
+        component: () => import('@/views/home/index.vue'),
+        meta: {
+          title: '首页',
+          isShow: true
+        }
+      },
+      {
+        // 测试2
+        path: '/test2',
+        meta: {
+          title: '测试页BB',
+          isShow: true
+        },
+        children: [
+          {
+            //测试3
+            path: '/test3',
+            meta: {
+              title: '测试页CCC',
+              isShow: true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    // 测试1
+    path: '/test1',
+    name: 'test',
+    meta: {
+      title: '测试页A',
+      isShow: true
+    }
   },
   {
     // 404
     path: '/404',
     component: () => import('@/views/404/index.vue'),
-    name: '404'
+    name: '404',
+    meta: {
+      title: '404',
+      isShow: false
+    }
   },
   {
     // 任意路由
     path: '/:pathMatch(.*)*',
     redirect: '/404',
-    name: 'any'
+    name: 'any',
+    meta: {
+      title: '任意路由',
+      isShow: false
+    }
   }
 ]

@@ -7,13 +7,16 @@ import type { loginFormData } from '@/api/user/type'
 import type { UserState } from './types/type'
 // 引入本地存储数据的工具方法
 import { GET_TOKEN, SET_TOKEN } from '@/utils/token'
+// 引入路由（常量路由）
+import { constantRoute } from '@/router/routes'
 
 // 创建小仓库User，选项式
 const useUserStore = defineStore('User', {
   // 状态数据，要求使用函数返回值（给返回值标注ts类型，即箭头函数小括号后标注）
   state: (): UserState => {
     return {
-      token: GET_TOKEN() // 用户唯一标识，每次刷新读取本地存储，保证持久化
+      token: GET_TOKEN(), // 用户唯一标识，每次刷新读取本地存储，保证持久化
+      menuRoutes: constantRoute // 存储生成菜单所需要的路由数组
     }
   },
   // 异步+业务逻辑（只关心异步返回的结果，再根据result返回成功or失败promise，不去管后续行为）
