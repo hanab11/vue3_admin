@@ -7,7 +7,8 @@ export const constantRoute = [
     name: 'login', // 需要命名路由，做权限
     meta: {
       title: '登录',
-      isShow: false
+      isShow: false,
+      icon: 'Plus'
     }
   },
   {
@@ -17,7 +18,8 @@ export const constantRoute = [
     name: 'layout',
     meta: {
       title: '布局',
-      isShow: true
+      isShow: true,
+      icon: 'Minus'
     },
     children: [
       {
@@ -26,7 +28,8 @@ export const constantRoute = [
         component: () => import('@/views/home/index.vue'),
         meta: {
           title: '首页',
-          isShow: true
+          isShow: true,
+          icon: 'House'
         }
       },
       {
@@ -34,7 +37,8 @@ export const constantRoute = [
         path: '/test2',
         meta: {
           title: '测试页BB',
-          isShow: true
+          isShow: true,
+          icon: 'Female'
         },
         children: [
           {
@@ -42,7 +46,8 @@ export const constantRoute = [
             path: '/test3',
             meta: {
               title: '测试页CCC',
-              isShow: true
+              isShow: true,
+              icon: 'Male'
             }
           }
         ]
@@ -55,7 +60,8 @@ export const constantRoute = [
     name: 'test',
     meta: {
       title: '测试页A',
-      isShow: true
+      isShow: true,
+      icon: 'Loading'
     }
   },
   {
@@ -65,7 +71,8 @@ export const constantRoute = [
     name: '404',
     meta: {
       title: '404',
-      isShow: false
+      isShow: false,
+      icon: 'Link'
     }
   },
   {
@@ -75,7 +82,8 @@ export const constantRoute = [
     name: 'any',
     meta: {
       title: '任意路由',
-      isShow: false
+      isShow: false,
+      icon: 'Star'
     }
   }
 ]
