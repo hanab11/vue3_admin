@@ -3,7 +3,7 @@
     <!-- 遍历路由数组 -->
     <template v-for="(item, index) in menuList" :key="item.path">
       <!-- 分析逻辑：先看是否展示，再按有无子路由区分 -->
-      <template v-if="item.meta.isShow">
+      <template v-if="!item.meta.hidden">
         <!-- 无子路由，用普通菜单 -->
         <el-menu-item
           v-if="!item.children"
@@ -37,12 +37,19 @@
 <script setup lang="ts">
 // 引入自身组件，实现递归（把N+1级路由数组当做N级的，再执行一次组件的逻辑代码）
 import Menu from './index.vue'
+import { ElNotification } from 'element-plus'
+import { useRouter } from 'vue-router'
+
 // 获取父组件传递的路由数组（理解：传入不同的数据，自身也可以是自身的父组件，这里用props方便递归）
 defineProps(['menuList'])
 
+// 获取路由器实例对象
+let $router = useRouter()
+
 // 菜单项点击回调
-const pushRoute = (vc) => {
-  console.log(vc.index) // 暂打印
+const pushRoute = (vc: any) => {
+  ElNotification({ type: 'info', message: `正在访问${vc.index}` }) // 路径提示
+  $router.push(vc.index) // 编程式路由跳转
 }
 </script>
 

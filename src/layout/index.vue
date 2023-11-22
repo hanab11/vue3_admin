@@ -15,9 +15,14 @@
       </el-scrollbar>
     </div>
     <!-- 顶部导航栏 -->
-    <div class="layout_tabbar">456</div>
+    <div class="layout_tabbar">
+      <!-- Tabbar组件待封装 -->
+    </div>
     <!-- 内容展示区 -->
-    <div class="layout_main">789</div>
+    <div class="layout_main">
+      <!-- Main组件待封装 -->
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -34,7 +39,7 @@ let userStore = useUserStore()
 .layout_container {
   width: 100%;
   height: 100vh;
-  background: blue; // 仅区分，后期删
+  background: skyblue; // 仅区分，后期删
 
   .layout_menu {
     color: whitesmoke;

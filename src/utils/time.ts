@@ -18,8 +18,8 @@ export const getTime = () => {
 export const timeMsg = () => {
   let msg = ''
   getTime() === '凌晨'
-    ? (msg = 'HI, 夜深了,身体最重要,晚安~')
-    : (msg = 'HI, ' + getTime() + '好~')
+    ? (msg = 'Zzzz，夜深了，晚安~')
+    : (msg = 'Hi，' + getTime() + '好~')
 
   return msg
 }
