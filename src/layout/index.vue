@@ -20,8 +20,8 @@
     </div>
     <!-- 内容展示区 -->
     <div class="layout_main">
-      <!-- Main组件待封装 -->
-      <router-view></router-view>
+      <!-- Main组件 -->
+      <Main></Main>
     </div>
   </div>
 </template>
@@ -29,6 +29,7 @@
 <script setup lang="ts">
 import Logo from './logo/index.vue'
 import Menu from './menu/index.vue'
+import Main from './main/index.vue'
 import useUserStore from '@/store/modules/user'
 
 // 获取用户相关的仓库，用props把路由数据传递到子路由
