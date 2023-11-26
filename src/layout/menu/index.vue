@@ -1,37 +1,36 @@
 <template>
-  <div>
-    <!-- 遍历路由数组 -->
-    <template v-for="(item, index) in menuList" :key="item.path">
-      <!-- 分析逻辑：先看是否展示，再按有无子路由区分 -->
-      <template v-if="!item.meta.hidden">
-        <!-- 无子路由，用普通菜单 -->
-        <el-menu-item
-          v-if="!item.children"
-          :index="item.path"
-          @click="pushRoute"
-        >
+  <!-- 遍历路由数组 -->
+  <template v-for="(item, index) in menuList" :key="item.path">
+    <!-- 分析逻辑：先看是否展示，再按有无子路由区分 -->
+    <template v-if="!item.meta.hidden">
+      <!-- 无子路由，用普通菜单 -->
+      <el-menu-item v-if="!item.children" :index="item.path" @click="pushRoute">
+        <el-icon>
+          <!-- component标签，实现动态绑定组件 -->
+          <component :is="item.meta.icon"></component>
+        </el-icon>
+        <!-- 用法B：这里用具名插槽title，为了在大菜单折叠时有内容提示，此时不可放图标（仅限无子路由的一级菜单） -->
+        <template #title>
+          <!-- el-menu的collapse保留图标、隐藏标题、更改大菜单折叠时样式，需要对标题用span标签 -->
+          <span>{{ item.meta.title }}</span>
+        </template>
+      </el-menu-item>
+
+      <!-- 有子路由，用折叠菜单 -->
+      <el-sub-menu v-if="item.children" :index="item.path">
+        <!-- 用法A：折叠菜单标题，必须用具名插槽title，插槽v-slot简写为# -->
+        <template #title>
+          <!-- 折叠菜单无需内容提示，此时可放图标在插槽里（仅限有子路由的一级菜单） -->
           <el-icon>
-            <!-- component标签，实现动态绑定组件 -->
             <component :is="item.meta.icon"></component>
           </el-icon>
           <span>{{ item.meta.title }}</span>
-        </el-menu-item>
-
-        <!-- 有子路由，用折叠菜单 -->
-        <el-sub-menu v-if="item.children" :index="item.path">
-          <!-- 折叠菜单标题，必须用具名插槽title，插槽v-slot简写为# -->
-          <template #title>
-            <el-icon>
-              <component :is="item.meta.icon"></component>
-            </el-icon>
-            <span>{{ item.meta.title }}</span>
-          </template>
-          <!-- 把子路由数组传入自身Menu组件 -->
-          <Menu :menuList="item.children"></Menu>
-        </el-sub-menu>
-      </template>
+        </template>
+        <!-- 把子路由数组传入自身Menu组件 -->
+        <Menu :menuList="item.children"></Menu>
+      </el-sub-menu>
     </template>
-  </div>
+  </template>
 </template>
 
 <script setup lang="ts">
