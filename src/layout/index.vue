@@ -12,7 +12,6 @@
           background-color="gray"
           text-color="whitesmoke"
           active-text-color="yellow"
-          collapse
           :default-active="$route.path"
         >
           <!-- Menu组件，传入路由数组，动态生成菜单项 -->
@@ -22,7 +21,8 @@
     </div>
     <!-- 顶部导航栏 -->
     <div class="layout_tabbar">
-      <!-- Tabbar组件待封装 -->
+      <!-- Tabbar组件 -->
+      <Tabbar></Tabbar>
     </div>
     <!-- 内容展示区 -->
     <div class="layout_main">
@@ -36,6 +36,7 @@
 import Logo from './logo/index.vue'
 import Menu from './menu/index.vue'
 import Main from './main/index.vue'
+import Tabbar from './tabbar/index.vue'
 import useUserStore from '@/store/modules/user'
 //import { useRoute } from 'vue-router' // 模板里可以直接使用$route实例对象
 
@@ -70,9 +71,9 @@ let userStore = useUserStore()
     position: fixed; // fixed固定定位，常见于导航栏
     width: calc(100% - $base-menu-width); // calc计算
     height: $base-tabbar-height;
-    background: yellow; // 仅区分，后期删
     left: $base-menu-width;
     top: 0px;
+    background: whitesmoke; // 仅区分，后期删
   }
 
   .layout_main {
