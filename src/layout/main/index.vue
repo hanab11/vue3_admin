@@ -1,15 +1,21 @@
 <template>
   <!-- router-view展示的是路由组件 -->
   <router-view v-slot="{ Component }">
-    <!-- 用transition标签，给组件实例加过渡动画 -->
+    <!-- 用transition标签，给组件实例加上过渡动画 -->
     <transition name="fade">
-      <!-- 用插槽配合component标签，动态获取组件实例，渲染的是layout路由组件的子路由 -->
+      <!-- 用component标签，动态获取组件实例，渲染的是layout路由组件的子路由 -->
       <component :is="Component"></component>
     </transition>
   </router-view>
 </template>
 
 <script setup lang="ts"></script>
+
+<script lang="ts">
+export default {
+  name: 'Main@'
+}
+</script>
 
 <style scoped lang="scss">
 // 只需要进入的动画
@@ -21,7 +27,7 @@
   opacity: 0;
   transform: scale(0); // 改变 大小
 }
-// 从哪离开，来到哪，用同一组样式
+// 来到哪，从哪离开，用同一组样式
 .fade-enter-to {
   opacity: 1;
   transform: scale(1);

@@ -52,4 +52,10 @@ const pushRoute = (vc: any) => {
 }
 </script>
 
+<script lang="ts">
+export default {
+  name: 'Menu@'
+}
+</script>
+
 <style scoped></style>

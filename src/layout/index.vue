@@ -44,6 +44,12 @@ import useUserStore from '@/store/modules/user'
 let userStore = useUserStore()
 </script>
 
+<script lang="ts">
+export default {
+  name: 'Layout' // 方便开发者工具区别组件
+}
+</script>
+
 <style scoped lang="scss">
 .layout_container {
   width: 100%;
