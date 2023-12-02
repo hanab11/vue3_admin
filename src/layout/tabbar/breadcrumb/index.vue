@@ -1,10 +1,12 @@
 <template>
-  <el-icon style="margin-right: 10px">
-    <Expand />
+  <!-- 折叠按钮 -->
+  <el-icon style="margin-right: 10px" @click="changeIcon">
+    <!-- 动态图标组件 -->
+    <component :is="configStore.isFold ? 'Expand' : 'Fold'"></component>
   </el-icon>
   <!-- el面包屑组件，其中每一项是el-breadcrumb-item，separator-icon图标分隔符，to属性让父路由可点击路由跳转 -->
   <el-breadcrumb separator-icon="ArrowRight">
-    <!-- 遍历匹配数据 -->
+    <!-- 遍历匹配数据，$route.matched根据路由表得到匹配数据 -->
     <el-breadcrumb-item
       v-for="(item, index) in $route.matched"
       :key="index"
@@ -22,10 +24,22 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import useLayoutConfigStore from '@/store/modules/config'
+//import { useRoute } from 'vue-router' // 模板里可以直接使用$route实例对象
 
-// 获取路由实例对象，$route.matched根据路由表得到匹配数据
-let $route = useRoute()
+// 获取布局配置相关的仓库
+let configStore = useLayoutConfigStore()
+
+// 点击折叠按钮的回调
+const changeIcon = () => {
+  configStore.isFold = !configStore.isFold // 切换
+}
+</script>
+
+<script lang="ts">
+export default {
+  name: 'Breadcrumb'
+}
 </script>
 
 <style scoped lang="scss">
