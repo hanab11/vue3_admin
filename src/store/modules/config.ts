@@ -5,7 +5,8 @@ import { defineStore } from 'pinia'
 const useLayoutConfigStore = defineStore('Config', {
   state: () => {
     return {
-      isFold: false // 控制菜单是否折叠
+      isFold: false, // 控制菜单是否折叠
+      isRefresh: false // 控制内容展示区是否刷新
     }
   }
 })
