@@ -1,22 +1,27 @@
 <template>
+  <!-- 刷新按钮 -->
   <el-button size="small" circle icon="Refresh" @click="refresh"></el-button>
+  <!-- 全屏按钮 -->
   <el-button
     size="small"
     circle
     icon="FullScreen"
     @click="fullScreen"
   ></el-button>
+  <!-- 设置按钮，待更新 -->
   <el-button size="small" circle icon="Setting"></el-button>
+  <!-- 用户头像 -->
   <img
-    src="../../../../public/logo.png"
-    alt="【logo】"
-    style="width: 24px; height: 24px; margin: 0 10px"
+    :src="userStore.avatar"
+    alt="【avatar】"
+    style="width: 24px; height: 24px; margin: 0 10px; border-radius: 50%"
   />
   <!-- el下拉菜单组件 -->
   <el-dropdown>
     <!-- 不加span的话，只渲染首个元素，字符串或图标 -->
     <span>
-      用户名
+      <!-- 用户名 -->
+      {{ userStore.username }}
       <el-icon>
         <ArrowDown />
       </el-icon>
@@ -32,7 +37,11 @@
 </template>
 
 <script setup lang="ts">
+import useUserStore from '@/store/modules/user'
 import useLayoutConfigStore from '@/store/modules/config'
+
+// 获取用户相关的仓库
+let userStore = useUserStore()
 
 // 获取布局配置相关的仓库
 let configStore = useLayoutConfigStore()

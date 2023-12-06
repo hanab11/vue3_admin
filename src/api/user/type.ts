@@ -15,7 +15,7 @@ export interface loginResponseData {
   data: dataType
 }
 
-interface checkUser {
+interface userInfoType {
   userInfo: {
     userId: number
     avatar: string
@@ -31,5 +31,5 @@ interface checkUser {
 // 定义服务器返回用户信息的数据的ts类型
 export interface userInfoReponseData {
   code: number
-  data: checkUser
+  data: userInfoType
 }

@@ -1,7 +1,7 @@
 // 用户相关的小仓库模块
 import { defineStore } from 'pinia'
-// 引入登录请求接口
-import { reqLogin } from '@/api/user'
+// 引入接口：请求登录、请求用户信息
+import { reqLogin, reqUserInfo } from '@/api/user'
 // 引入ts数据类型
 import type { loginFormData } from '@/api/user/type'
 import type { UserState } from './types/type'
@@ -16,15 +16,17 @@ const useUserStore = defineStore('User', {
   state: (): UserState => {
     return {
       token: GET_TOKEN(), // 用户唯一标识，每次刷新读取本地存储，保证持久化
-      menuRoutes: constantRoute // 存储生成菜单所需要的路由数组
+      menuRoutes: constantRoute, // 存储生成菜单所需要的路由数组
+      username: '', // 用户名
+      avatar: '' // 用户头像
     }
   },
   // 异步+业务逻辑（只关心异步返回的结果，再根据result返回成功or失败promise，不去管后续行为）
   actions: {
-    // 用户登录请求，reqLogin需要传参，userLogin需要接收参数
+    // 用户登录方法，reqLogin需要传参，userLogin需要接收参数
     // 传入参数data报红，显示默认any类型，就需要给data标注数据类型（data: xxx）
     async userLogin(data: loginFormData) {
-      const result = await reqLogin(data) // 异步请求会返回promise对象，使用async await，注意result自动推断ts类型
+      const result = await reqLogin(data) // 异步请求会返回promise对象，使用async await，注result自动推断ts类型
 
       // 登录成功 200 -> 获得 token，并存储到state
       // 登录失败 201 -> 获得 失败信息
@@ -39,6 +41,17 @@ const useUserStore = defineStore('User', {
         // 返回失败的promise，用reject方法，传入参数最好是error实例对象（等价error = new Error()）
         return Promise.reject(new Error(result.data.message))
       }
+    },
+
+    // 用户信息方法，获取用户信息需要带着token请求，在请求头里封装
+    async userInfo() {
+      const result = await reqUserInfo() // 异步请求，等待响应结果，注result自动推断ts类型
+
+      // 判断成功，获得用户信息存储到state
+      if (result.code === 200) {
+        this.username = result.data.userInfo.username
+        this.avatar = result.data.userInfo.avatar
+      } //else {}
     }
   },
   // 计算属性
