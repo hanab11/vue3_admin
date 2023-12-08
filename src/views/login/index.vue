@@ -9,7 +9,7 @@
           class="login_form"
           :model="loginForm"
           :rules="rules"
-          ref="loginForms"
+          ref="elLoginForm"
         >
           <h1>Hello</h1>
           <h2>欢迎</h2>
@@ -50,40 +50,46 @@
 <script setup lang="ts">
 import { User, Lock } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { ElNotification } from 'element-plus'
 import { timeMsg } from '@/utils/time'
 // 引入用户相关仓库
 import useUserStore from '@/store/modules/user'
 
-// 创建路由器、用户仓库实例
+// 获取路由器、路由的实例对象
 let $router = useRouter()
+let $route = useRoute()
+// 获取用户相关的仓库
 let userStore = useUserStore()
 
 // 收集表单账密
 let loginForm = reactive({ username: 'admin', password: '111111' })
 // 控制按钮样式-loading
 let isLoading = ref(false)
-// 获取el-form组件，注：起名不要用elForm，容易冲突！
-let loginForms = ref() // ref获取DOM元素必须在onMounted生命周期，@click回调里也可
+// 获取el-form组件实例对象，注：起名不要用elForm，容易冲突！！！
+let elLoginForm = ref() // ref获取DOM元素必须在onMounted生命周期，@click回调里也可
 
 // 登录按钮回调
 const login = async () => {
   // 分析，点击按钮以后做的事（校验，发请求，跳转，消息提示，交互样式）
 
   // 保证全部表单校验通过，才发请求（await只接收promise成功的结果，失败就中断）
-  let result = await loginForms.value.validate() // el-form组件validate方法，校验，接收回调或者返回promise
+  let result = await elLoginForm.value.validate() // el-form组件validate方法，校验，接收回调或者返回promise
   console.log('await只接收', result)
 
-  // 开始加载
+  // 开始加载动画
   isLoading.value = true
 
   /* try catch写法 */
   try {
     // 保证登陆成功
-    await userStore.userLogin(loginForm)
+    await userStore.userLogin(loginForm) // 发登录请求
 
-    $router.push('/home') // 编程式路由跳转到主页
+    // 注：判断包括if、三元表达式、逻辑或与...等
+    // 判断登录时，路由路径是否有query参数，如果有就往query参数跳转，没有就跳转'/'（已重定向主页）
+    let redirect = $route.query.redirect
+    $router.push({ path: (redirect as string) || '/' }) // 二选一跳转，可用逻辑或||
+
     // 成功提示
     ElNotification({
       type: 'success',

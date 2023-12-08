@@ -9,3 +9,8 @@ export const GET_TOKEN = () => {
 export const SET_TOKEN = (token: string) => {
   localStorage.setItem('TOKEN', token)
 }
+
+// 清除数据
+export const REMOVE_TOKEN = () => {
+  localStorage.removeItem('TOKEN')
+}
