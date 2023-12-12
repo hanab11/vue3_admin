@@ -4,7 +4,6 @@ import App from '@/App.vue'
 // 引入element-plus插件、样式、国际化
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-//@ts-ignore 忽略当前文件ts类型的检测，否则有红色提示（打包会失败）
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 // 引入全局组件插件
@@ -17,6 +16,8 @@ import 'virtual:svg-icons-register'
 
 // 引入路由器
 import router from '@/router'
+// 引入路由守卫，路由鉴权
+import '@/router/permission'
 
 // 引入大仓库pinia
 import pinia from '@/store'

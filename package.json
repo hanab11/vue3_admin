@@ -26,6 +26,7 @@
     "axios": "^1.6.0",
     "element-plus": "^2.4.1",
     "mockjs": "^1.1.0",
+    "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
     "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
