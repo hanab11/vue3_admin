@@ -51,7 +51,10 @@ const useUserStore = defineStore('User', {
       if (result.code === 200) {
         this.username = result.data.userInfo.username
         this.avatar = result.data.userInfo.avatar
-      } //else {}
+        return 'ok'
+      } else {
+        return Promise.reject('获取用户信息失败')
+      }
     },
 
     // 用户登出方法
