@@ -14,15 +14,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import useUserStore from '@/store/modules/user'
 
 // 获取用户相关的仓库
 let userStore = useUserStore()
-// 挂载完毕发请求获取用户信息
-onMounted(() => {
-  userStore.userInfo()
-})
 </script>
 
 <style scoped></style>

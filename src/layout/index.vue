@@ -35,7 +35,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import Logo from './logo/index.vue'
 import Menu from './menu/index.vue'
 import Main from './main/index.vue'
@@ -48,11 +47,6 @@ import useLayoutConfigStore from '@/store/modules/config'
 let userStore = useUserStore()
 // 获取布局配置相关的仓库
 let configStore = useLayoutConfigStore()
-
-// 挂载完毕发请求获取用户信息，刷新保留用户数据，访问路由组件走一遍布局组件
-onMounted(() => {
-  userStore.userInfo()
-})
 </script>
 
 <script lang="ts">

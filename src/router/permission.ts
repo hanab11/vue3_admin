@@ -6,24 +6,27 @@ import 'nprogress/nprogress.css'
 // 引入小仓库方法
 import useUserStore from '@/store/modules/user'
 
+// 取消nprogress加载圈
+nprogress.configure({ showSpinner: false })
+
 // 全局路由守卫，访问任意路由都会触发的钩子
 
 // 全局前置守卫，访问某路由之前
 router.beforeEach(async (to, from, next) => {
   // to将访问的路由，from来自的路由，next路由的放行函数
   nprogress.start()
-  // 获取用户相关的小仓库，利用token状态数据 判断用户登录状态
+  // 获取用户相关的小仓库
   const userStore = useUserStore()
-  // 获取用户名
-  const username = userStore.username
+  const username = userStore.username // 拿到用户名
+
+  // 利用token状态数据来判断用户登录状态（关于token是否过期，在请求拦截器处理）
   if (userStore.token) {
-    // 用户登录后不可用组件：login
-    to.path == '/login' ? next('/') : next()
+    // 用户登录成功后不可用组件：login
     if (to.path == '/login') {
       next('/')
     } else {
-      // 访问其余6个路由
-      // 有用户信息
+      // 访问其余路由
+      // 有用户信息 放行
       if (username) next()
       else {
         // 如果没有用户信息，守卫发请求获取用户信息再放行
@@ -32,7 +35,10 @@ router.beforeEach(async (to, from, next) => {
           await userStore.userInfo()
           next()
         } catch (error) {
-          // token过期，获取不到用户信息
+          // 获取不到用户信息，原因：token过期、用户手动修改了本地存储token
+          // 退出登录并重定向login
+          userStore.userLogout()
+          next({ path: '/login', query: { redirect: to.path } })
         }
       }
     }
@@ -43,20 +49,10 @@ router.beforeEach(async (to, from, next) => {
       ? next()
       : next({ path: '/login', query: { redirect: to.path } })
   }
-  next()
 })
 
 // 全局后置守卫，访问某路由之后
 router.afterEach((to, from, failure) => {
   nprogress.done()
+  document.title = to.meta.title as string
 })
-
-//
-// 处理项目存在的问题
-//
-// 1，任意路由切换的进度条业务 nprogress
-// 2，路由鉴权业务（配置路由组件访问权限）
-
-// 路由组件有：登录 404 任意路由 首页 数据大屏 权限管理 商品管理
-
-// 用户登录后可用组件：访问login时重定向到首页 /

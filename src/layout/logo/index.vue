@@ -1,8 +1,8 @@
 <template>
   <div class="logo_container" v-if="setting.logoIsShow">
     <img :src="setting.logoPath" alt="【logo】" />
-    <!-- 防止文字抖动，折叠时隐藏全部文字 -->
-    <p v-show="!fold">{{ setting.title }}</p>
+    <!-- white-space: nowrap 不换行防止文字抖动，折叠时隐藏全部文字 -->
+    <p v-show="!fold" style="white-space: nowrap">{{ setting.title }}</p>
   </div>
 </template>
 
