@@ -2,8 +2,8 @@
 import { defineStore } from 'pinia'
 // 引入接口：请求登录、请求用户信息
 import { reqLogin, reqLogout, reqUserInfo } from '@/api/user'
-// 引入ts数据类型
-//import type { loginFormData } from '@/api/user/type'
+// 引入用户数据的ts类型
+import type { loginFormData } from '@/api/user/type'
 import type { UserState } from './types/type'
 // 引入本地存储数据的工具方法
 import { GET_TOKEN, SET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
@@ -23,11 +23,10 @@ const useUserStore = defineStore('User', {
   },
   // 异步+业务逻辑（只关心异步返回的结果，再根据result返回成功or失败promise，不去管后续行为）
   actions: {
-    // 用户登录方法，reqLogin需要传参，userLogin需要接收参数
-    // 传入参数data报红，显示默认any类型，就需要给data标注数据类型（data: xxx）
-    async userLogin(data: any) {
-      const result = await reqLogin(data) // 异步请求会返回promise对象，使用async await，注result自动推断ts类型
-      //console.log(result) // 接口响应result:{code, message, data, ok} data成功是token，失败是提示信息
+    // 用户登录方法，因为reqLogin需要传参，用userLogin接收参数data，ts类型loginFormData
+    async userLogin(data: loginFormData) {
+      const result = await reqLogin(data) // 注：result自动推断ts类型，异步请求返回promise对象，使用async await
+      //console.log(result) // 打印result:{code, message, data, ok} 注：data成功是token，失败是提示信息
 
       // 登录成功 200 -> 获得 token，并存储到state
       // 登录失败 201 -> 获得 失败信息
@@ -46,8 +45,7 @@ const useUserStore = defineStore('User', {
 
     // 用户信息方法，获取用户信息需要带着token请求，在请求头里封装
     async userInfo() {
-      const result = await reqUserInfo() // 异步请求，等待响应结果，注result自动推断ts类型
-      //console.log(result) // 接口响应result:{code, message, data:{name, avatar}, ok}
+      const result = await reqUserInfo() // 注：result自动推断ts类型，异步请求，等待响应结果
 
       // 判断成功，获得用户信息存储到state
       if (result.code === 200) {
@@ -61,8 +59,7 @@ const useUserStore = defineStore('User', {
 
     // 用户登出方法
     async userLogout() {
-      // 退出登录接口（通知服务器本地用户唯一标识失效）
-      const result = await reqLogout()
+      const result = await reqLogout() // 退出登录接口，异步请求（通知服务器本地用户唯一标识失效）
 
       if (result.code == 200) {
         this.token = ''
