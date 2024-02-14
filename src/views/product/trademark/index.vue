@@ -39,7 +39,7 @@
         :page-sizes="[5, 10, 15, 20]"
         :background="true"
         layout="prev, pager, next, jumper, ->, sizes, total"
-        :total="total"
+        :total="400"
         :pager-count="9"
       />
     </el-card>
