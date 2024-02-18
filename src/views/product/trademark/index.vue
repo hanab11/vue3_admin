@@ -54,12 +54,68 @@
 
 <script setup lang="ts">
 import { ElMessage, UploadProps, formEmits } from 'element-plus'
-import { ref } from 'vue'
+// 引入组合式API函数ref
+import { ref, onMounted, reactive, nextTick } from 'vue'
+// 引入请求回调
+import {
+  reqHasTrademark,
+  reqAddOrUpdateTrademark,
+  reqDeleteTrademark
+} from '@/api/product/trademark'
+// 引入ts类型
+import type {
+  Records,
+  TradeMarkResponseData,
+  TradeMark
+} from '@/api/product/trademark/type'
 
-// 分页器当前页码
-let pageNo = ref(1)
-// 每页展示数据个数
-let pageSize = ref(5)
+let pageNo = ref<number>(1) // 分页器当前页码
+let pageSize = ref<number>(5) // 每页展示数据个数
+let total = ref<number>(0) // 存储已有品牌数据总数
+let trademarkArr = ref<Records>([]) // 存储已有品牌的数据
+let dialogFormVisible = ref<boolean>(false) // 控制对话框可视化（显示与隐藏）
+
+// 定义收集新增品牌数据
+let trademarkParams = reactive<TradeMark>({
+  tmName: '', // 品牌名
+  logoUrl: '' // logo地址
+})
+
+let formRef = ref() // 通过ref获取el-form组件实例
+
+// 组件挂载完毕钩子：发一次请求，获取第一页、一页五个已有品牌数据
+onMounted(() => {
+  getHasTrademark()
+})
+
+// 获取已有品牌的接口，封装为一个函数：在任何情况下，调用函数获取数据
+const getHasTrademark = async (pager = 1) => {
+  // 当前页码
+  pageNo.value = pager
+  let result: TradeMarkResponseData = await reqHasTrademark(
+    pageNo.value,
+    pageSize.value
+  )
+  if (result.code == 200) {
+    // 存储已有品牌总个数
+    total.value = result.data.total
+    trademarkArr.value = result.data.records
+  }
+}
+
+// 分页器当前页码发生变化的时候会触发
+// 对于当前页码发生变化自定义事件，组件pagination父组件回传了数据(当前的页码)
+// const changePageNo = ()=>{
+//     //当前页码发生变化的时候再次发请求获取对应已有品牌数据展示
+//     getHasTrademark();
+// }
+
+// 当下拉菜单发生变化的时候触发次方法
+// 这个自定义事件，分页器组件会将下拉菜单选中数据返回
+const sizeChange = () => {
+  // 当前每一页的数据量发生变化的时候，当前页码归1
+  getHasTrademark()
+}
 </script>
 
 <style scoped>
