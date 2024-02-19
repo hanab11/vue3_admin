@@ -116,6 +116,164 @@ const sizeChange = () => {
   // 当前每一页的数据量发生变化的时候，当前页码归1
   getHasTrademark()
 }
+
+// 添加品牌按钮的回调
+const addTrademark = () => {
+  //对话框显示
+  dialogFormVisible.value = true
+  //清空收集数据
+  trademarkParams.id = 0
+  trademarkParams.tmName = ''
+  trademarkParams.logoUrl = ''
+  //第一种写法:ts的问号语法
+  // formRef.value?.clearValidate('tmName');
+  // formRef.value?.clearValidate('logoUrl');
+  nextTick(() => {
+    formRef.value.clearValidate('tmName')
+    formRef.value.clearValidate('logoUrl')
+  })
+}
+
+// 修改已有品牌的按钮的回调
+//row:row即为当前已有的品牌
+const updateTrademark = (row: TradeMark) => {
+  //清空校验规则错误提示信息
+  nextTick(() => {
+    formRef.value.clearValidate('tmName')
+    formRef.value.clearValidate('logoUrl')
+  })
+  //对话框显示
+  dialogFormVisible.value = true
+  //ES6语法合并对象
+  Object.assign(trademarkParams, row)
+}
+
+// 对话框底部取消按钮
+const cancel = () => {
+  //对话框隐藏
+  dialogFormVisible.value = false
+}
+
+// 确定按钮
+const confirm = async () => {
+  //在发请求之前,要对于整个表单进行校验
+  //调用这个方法进行全部表单相校验,如果校验全部通过，在执行后面的语法
+  await formRef.value.validate()
+  let result: any = await reqAddOrUpdateTrademark(trademarkParams)
+  //添加|修改已有品牌
+  if (result.code == 200) {
+    //关闭对话框
+    dialogFormVisible.value = false
+    //弹出提示信息
+    ElMessage({
+      type: 'success',
+      message: trademarkParams.id ? '修改品牌成功' : '添加品牌成功'
+    })
+    //再次发请求获取已有全部的品牌数据
+    getHasTrademark(trademarkParams.id ? pageNo.value : 1)
+  } else {
+    //添加品牌失败
+    ElMessage({
+      type: 'error',
+      message: trademarkParams.id ? '修改品牌失败' : '添加品牌失败'
+    })
+    //关闭对话框
+    dialogFormVisible.value = false
+  }
+}
+
+// 上传图片组件->上传图片之前触发的回调
+const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
+  //钩子是在图片上传成功之前触发,上传文件之前可以约束文件类型与大小
+  //要求:上传文件格式png|jpg|gif 4M
+  if (
+    rawFile.type == 'image/png' ||
+    rawFile.type == 'image/jpeg' ||
+    rawFile.type == 'image/gif'
+  ) {
+    if (rawFile.size / 1024 / 1024 < 4) {
+      return true
+    } else {
+      ElMessage({
+        type: 'error',
+        message: '上传文件大小小于4M'
+      })
+      return false
+    }
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '上传文件格式务必PNG|JPG|GIF'
+    })
+    return false
+  }
+}
+
+// 图片上传成功钩子
+const handleAvatarSuccess: UploadProps['onSuccess'] = (
+  response,
+  uploadFile
+) => {
+  //response:即为当前这次上传图片post请求服务器返回的数据
+  //收集上传图片的地址,添加一个新的品牌的时候带给服务器
+  trademarkParams.logoUrl = response.data
+  //图片上传成功,清除掉对应图片校验结果
+  formRef.value.clearValidate('logoUrl')
+}
+
+// 品牌的自定义校验规则方法
+const validatorTmName = (rule: any, value: any, callBack: any) => {
+  //是当表单元素触发blur时候,会触发此方法
+  //自定义校验规则
+  if (value.trim().length >= 2) {
+    callBack()
+  } else {
+    //校验未通过返回的错误的提示信息
+    callBack(new Error('品牌名称位数大于等于两位'))
+  }
+}
+
+// 品牌LOGO的自定义校验规则方法
+const validatorLogoUrl = (rule: any, value: any, callBack: any) => {
+  //如果图片上传
+  if (value) {
+    callBack()
+  } else {
+    callBack(new Error('LOGO图片务必上传'))
+  }
+}
+
+// 表单校验规则对象
+const rules = {
+  tmName: [
+    //required:这个字段务必校验,表单项前面出来五角星
+    //trigger:代表触发校验规则时机[blur、change]
+    { required: true, trigger: 'blur', validator: validatorTmName }
+  ],
+  logoUrl: [{ required: true, validator: validatorLogoUrl }]
+}
+
+// 气泡确认框确定按钮的回调
+const removeTradeMark = async (id: number) => {
+  //点击确定按钮删除已有品牌请求
+  let result = await reqDeleteTrademark(id)
+  if (result.code == 200) {
+    //删除成功提示信息
+    ElMessage({
+      type: 'success',
+      message: '删除品牌成功'
+    })
+    //再次获取已有的品牌数据
+    getHasTrademark(
+      trademarkArr.value.length > 1 ? pageNo.value : pageNo.value - 1
+    )
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '删除品牌失败'
+    })
+  }
+}
 </script>
 
 <style scoped>
